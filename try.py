@@ -40,7 +40,7 @@ def calculate(filename):
 	print(add)
 	return getmax(add) 
 model = createModel(10, sliceSize)
-model.load('musicDNN.tflearn')
+model.load('musicDNN_1.0.tflearn')
 calculate("tt.mp3")
 
 
