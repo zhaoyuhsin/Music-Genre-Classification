@@ -18,7 +18,7 @@ tflearn
 -> https://github.com/despoisj/DeepAudioClassification
 ## use
 1.将 模型文件(3个,index,meta,data)放入 / 下
-2.main.py中调用calculate("a.mp3")，返回大小为10的列表ans,其中ans[i]代表属于第i个流派的概率
+2.执行python try.py ，输出当前路径下tt.mp3的概率
 
 
 
