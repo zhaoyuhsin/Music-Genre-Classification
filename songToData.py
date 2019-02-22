@@ -4,7 +4,7 @@ import os
 from PIL import Image
 import eyed3
 
-from sliceSpectrogram import createSlicesFromSpectrograms
+from sliceSpectrogram import createSlicesFromSpectrograms, sp2slice
 from audioFilesTools import isMono, getGenre
 from config import rawDataPath
 from config import spectrogramsPath
@@ -34,6 +34,28 @@ def createSpectrogram(filename,newFilename):
 	#Create spectrogram
 	filename.replace(".mp3","")
 	command = "sox '/tmp/{}.mp3' -n spectrogram -Y 200 -X {} -m -r -o '{}.png'".format(newFilename,pixelPerSecond,spectrogramsPath+newFilename)
+	p = Popen(command, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True, cwd=currentPath)
+	output, errors = p.communicate()
+	if errors:
+		print errors
+
+	#Remove tmp mono track
+        
+	os.remove("/tmp/{}.mp3".format(newFilename))
+def mp2png(filename,newFilename):
+	#Create temporary mono track if needed
+	if isMono(filename):
+		command = "cp '{}' '/tmp/{}.mp3'".format(filename,newFilename)
+	else:
+		command = "sox '{}' '/tmp/{}.mp3' remix 1,2".format(filename,newFilename)
+	p = Popen(command, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True, cwd=currentPath)
+	output, errors = p.communicate()
+	if errors:
+		print errors
+
+	#Create spectrogram
+	filename.replace(".mp3","")
+	command = "sox '/tmp/{}.mp3' -n spectrogram -Y 200 -X {} -m -r -o '{}.png'".format(newFilename,pixelPerSecond,newFilename)
 	p = Popen(command, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True, cwd=currentPath)
 	output, errors = p.communicate()
 	if errors:
@@ -76,9 +98,16 @@ def createSlicesFromAudio():
 	print "Creating spectrograms..."
 	createSpectrogramsFromAudio()
 	print "Spectrograms created!"
-
 	print "Creating slices..."
 	createSlicesFromSpectrograms(desiredSize)
         print("DesiredSize");
         print(desiredSize);
 	print "Slices created!"
+def mp3topng(filename):
+	print("Start mp3 -> png!!")
+	mp2png(filename, "new")
+	print("Start png -> pngs!!")
+	sp2slice("new.png", desiredSize)
+	print("Finished")
+
+

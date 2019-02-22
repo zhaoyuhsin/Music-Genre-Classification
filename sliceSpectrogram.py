@@ -39,4 +39,31 @@ def sliceSpectrogram(filename, desiredSize):
 		startPixel = i*desiredSize
 		imgTmp = img.crop((startPixel, 1, startPixel + desiredSize, desiredSize + 1))
 		imgTmp.save(slicesPath+"{}/{}_{}.png".format(genre,filename[:-4],i))
+def sp2slice(filename, desiredSize):
+
+	# Load the full spectrogram
+	img = Image.open(filename)
+
+	#Compute approximate number of 128x128 samples
+	width, height = img.size
+	nbSamples = int(width/desiredSize)
+	width - desiredSize
+
+	#Create path if not existing
+	newPath = "Generate/"
+	if not os.path.exists(os.path.dirname(newPath)):
+		try:
+			os.makedirs(os.path.dirname(newPath))
+		except OSError as exc: # Guard against race condition
+			if exc.errno != errno.EEXIST:
+				raise
+
+	#For each sample
+	for i in range(nbSamples):
+		print "Creating slice: ", (i+1), "/", nbSamples, "for", filename
+		#Extract and save 128x128 sample
+		startPixel = i*desiredSize
+		imgTmp = img.crop((startPixel, 1, startPixel + desiredSize, desiredSize + 1))
+		imgTmp.save(newPath+"{}_{}.png".format(filename[:-4],i))
+
 

@@ -75,71 +75,41 @@ def saveDataset(train_X, train_y, validation_X, validation_y, test_X, test_y, nb
     print("    Dataset saved! ✅💾")
 
 #Creates and save dataset from slices
-def str2num(str):
-    ans = 0
-    flag = False
-    for i in range(len(str)):
-        if (str[i] == '_'):
-            flag = not flag
-            continue
-        if (flag):
-            ans = ans * 10 + int(str[i])
-    return ans
 def createDatasetFromSlices(nbPerGenre, genres, sliceSize, validationRatio, testRatio):
     data = []
-    testdata = []
-    rt = []
-    genres.sort()
-    ct = 0
-    cc = 0
     for genre in genres:
         print("-> Adding {}...".format(genre))
         #Get slices in genre subfolder
         filenames = os.listdir(slicesPath+genre)
         filenames = [filename for filename in filenames if filename.endswith('.png')]
         filenames = filenames[:nbPerGenre]
-        filenames.sort()
         #Randomize file selection for this genre
-        #shuffle(filenames)
+        shuffle(filenames)
 
         #Add data (X,y)
         for filename in filenames:
             imgData = getImageData(slicesPath+genre+"/"+filename, sliceSize)
             label = [1. if genre == g else 0. for g in genres]
-            if (str2num(filename) <= 90):
-                data.append((imgData,label))
-                ct += 1
-            else:
-                testdata.append((imgData, label))
-                rt.append(filename)
-                cc += 1
+            data.append((imgData,label))
 
     #Shuffle data
     shuffle(data)
 
     #Extract X and y
     X,y = zip(*data)
-    tx, ty = zip(*testdata)
+
     #Split data
-    lx, ly = len(X), len(y)
-    validationNb = int(len(X)/9)
-    print("--------------")
-    print(validationNb)
-    testNb = int(len(tx))
-    print(testNb)
-    trainNb = len(X)-validationNb
-    print(trainNb)
-    print("--------------")
+    validationNb = int(len(X)*validationRatio)
+    testNb = int(len(X)*testRatio)
+    trainNb = len(X)-(validationNb + testNb)
+
     #Prepare for Tflearn at the same time
     train_X = np.array(X[:trainNb]).reshape([-1, sliceSize, sliceSize, 1])
     train_y = np.array(y[:trainNb])
     validation_X = np.array(X[trainNb:trainNb+validationNb]).reshape([-1, sliceSize, sliceSize, 1])
     validation_y = np.array(y[trainNb:trainNb+validationNb])
-
-    test_X = np.array(tx).reshape([-1, sliceSize, sliceSize, 1])
-    test_y = np.array(ty)
-    for i in range(100):
-        print(train_y[i])
+    test_X = np.array(X[-testNb:]).reshape([-1, sliceSize, sliceSize, 1])
+    test_y = np.array(y[-testNb:])
     print("    Dataset created! ✅")
         
     #Save
