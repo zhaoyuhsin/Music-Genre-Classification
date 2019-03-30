@@ -22,6 +22,7 @@ eyed3.log.setLevel("ERROR")
 #Create spectrogram from mp3 files
 def createSpectrogram(filename,newFilename):
 	#Create temporary mono track if needed
+	print(newFilename)
 	if isMono(rawDataPath+filename):
 		command = "cp '{}' '/tmp/{}.mp3'".format(rawDataPath+filename,newFilename)
 	else:
@@ -30,12 +31,12 @@ def createSpectrogram(filename,newFilename):
 	output, errors = p.communicate()
 	if errors:
 		print errors
-
 	#Create spectrogram
 	filename.replace(".mp3","")
 	command = "sox '/tmp/{}.mp3' -n spectrogram -Y 200 -X {} -m -r -o '{}.png'".format(newFilename,pixelPerSecond,spectrogramsPath+newFilename)
 	p = Popen(command, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True, cwd=currentPath)
 	output, errors = p.communicate()
+	print("shit")
 	if errors:
 		print errors
 

@@ -55,7 +55,7 @@ if "train" in args.mode:
 
 	#Define run id for graphs
 	run_id = "MusicGenres - "+str(batchSize)+" "+''.join(random.SystemRandom().choice(string.ascii_uppercase) for _ in range(10))
-	model.load('musicDNN.tflearn')
+	model.load('musicDNN_5.0_80epoch.tflearn')
 	#Train the model
 	print("[+] Training the model...")
 	model.fit(train_X, train_y, n_epoch=nbEpoch, batch_size=batchSize, shuffle=True, validation_set=(validation_X, validation_y), snapshot_step=100, show_metric=True, run_id=run_id)
@@ -63,7 +63,7 @@ if "train" in args.mode:
 
 	#Save trained model
 	print("[+] Saving the weights...")
-	model.save('musicDNN_1.0.tflearn')
+	model.save('musicDNN_6.0.tflearn')
 	print("[+] Weights saved! ✅💾")
 
 if "test" in args.mode:
@@ -73,7 +73,7 @@ if "test" in args.mode:
 	#train_X, train_y, validation_X, validation_y = getDataset(filesPerGenre, genres, sliceSize, validationRatio, testRatio, mode="train")
     #Load weights
 	print("[+] Loading weights...")
-	model.load('musicDNN_1.0.tflearn')
+	model.load('musicDNN_5.0_80epoch.tflearn')
 
 	num = len(test_X)
 	pred = model.predict(test_X)
