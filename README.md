@@ -33,12 +33,12 @@
 ## train
 -> https://github.com/despoisj/DeepAudioClassification
 ## Predict New File
-1.将 模型文件(3个,index,meta,data)放入 / 下
-2.执行python try.py ，输出当前路径下tt.mp3的概率
-
+* 通过predict.py中的calculate()
+* 将模型文件放到model/下，与predict.py对应起来(确保load成功)
+* calculate()中input为待预测新文件路径，输出为0~9的数字，分别代表十个风格，详见predict.py注释
+* 想获得预测每个风格的概率，可以返回predict.py中的add数组，需要再正则化一下
 
 ## tips
- 1. MP3文件经处理变成数据库文件，后放入Data/Dataset中
- 2. 预处理数据集的数据库文件之后会上传到百度网盘上(包括train好的网络)
- 3. 之后更新&
+ * MP3文件经处理变成数据库文件，后放入Data/Dataset中
+ * 预处理数据集的数据库文件之后会上传到百度网盘上(包括train好的网络)
  
