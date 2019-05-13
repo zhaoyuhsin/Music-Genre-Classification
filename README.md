@@ -42,3 +42,37 @@
  * MP3文件经处理变成数据库文件，后放入Data/Dataset中
  * 预处理数据集的数据库文件之后会上传到百度网盘上(包括train好的网络)
  
+ ## Result of some examples
+* Input为输入文件路径
+* add为predict.py中add数组的值,每个下标代表一种风格的音乐, 权重越大，概率越高,可正则化
+* Output为音乐风格预测结果
+#### Sample 1 
+Input:  music/blue1.mp3:
+
+add:    [11, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+Output: 0
+#### Sample 2
+Input:  music/blue2.mp3:
+
+add:    [11, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+Output: 0
+#### Sample 3
+Input:  music/tt.mp3:
+
+add:    [3, 72, 1, 1, 2, 2, 5, 1, 5, 4]
+
+Output: 1
+#### Sample 4
+Input:  music/country1.mp3:
+
+add:    [0, 0, 9, 0, 0, 0, 0, 1, 1, 0]
+
+Output: 2
+#### Sample 5
+Input:  music/metal1.mp3:
+
+add:    [0, 0, 0, 0, 0, 0, 11, 0, 0, 0]
+
+Output: 6
