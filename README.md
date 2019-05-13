@@ -8,11 +8,11 @@
 **GTZAN**
 10个类别，每个类别100首歌曲(au格式)
 ## requirement
-eyed3
-sox --with-lame
-tensorflow
-tflearn
-libid3tag(由于sox不支持MP3格式)
+* eyed3
+* sox --with-lame
+* tensorflow
+* tflearn
+* libid3tag(由于sox不支持MP3格式)
 ## format
 训练数据集路径：Data/Dataset/
 待加载模型路径：/
